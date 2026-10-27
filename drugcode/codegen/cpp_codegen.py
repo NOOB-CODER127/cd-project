@@ -41,6 +41,9 @@ class CppCodeGen(BaseCodeGen):
             "    int rotb{0};",
             "    int aromatic_rings{0};",
             "    double tpsa{0.0};",
+            "    double qed{0.0};",
+            "    double oral_bioavailability{0.85};",
+            "    double synthetic_accessibility{2.5};",
             "    bool herg_inhibition{false};",
             "    double docking_affinity{0.0};",
             "};",
@@ -48,16 +51,25 @@ class CppCodeGen(BaseCodeGen):
             "// Fast SMILES property parser",
             "void compute_properties(Molecule& mol) {",
             "    int heavy = 0;",
+            "    int total_arom = 0;",
             "    for (char c : mol.smiles) {",
+            "        if (c == 'c' || c == 'n' || c == 'o' || c == 's') total_arom++;",
             "        if (c == 'C' || c == 'c') { mol.mw += 12.011; heavy++; mol.logp += 0.15; }",
             "        else if (c == 'O' || c == 'o') { mol.mw += 15.999; heavy++; mol.hba++; mol.tpsa += 9.23; mol.logp -= 0.32; }",
             "        else if (c == 'N' || c == 'n') { mol.mw += 14.007; heavy++; mol.hba++; mol.tpsa += 12.03; mol.logp -= 0.31; }",
             "        else if (c == 'S' || c == 's') { mol.mw += 32.065; heavy++; mol.tpsa += 25.30; mol.logp += 0.38; }",
             "    }",
+            "    mol.aromatic_rings = static_cast<int>(std::round(total_arom / 6.0));",
             "    int implicit_h = static_cast<int>(heavy * 1.2);",
             "    mol.mw += implicit_h * 1.008;",
             "    mol.logp += implicit_h * 0.112;",
-            "    mol.herg_inhibition = (mol.logp > 3.5 && mol.mw > 400.0);",
+            "    mol.rotb = static_cast<int>(std::max(0.0, (heavy - total_arom) * 0.3));",
+            "    mol.synthetic_accessibility = 1.0 + mol.rotb * 0.25 + mol.aromatic_rings * 0.3;",
+            "    mol.herg_inhibition = (mol.logp > 3.5 && mol.mw > 400.0) || (mol.aromatic_rings >= 3 && mol.logp > 3.0);",
+            "    mol.oral_bioavailability = std::max(0.1, 0.95 - (mol.mw > 500.0 ? 0.2 : 0.0) - (mol.logp > 5.0 ? 0.2 : 0.0));",
+            "    double d_mw = 1.0 / (1.0 + std::exp((mol.mw - 380.0) / 45.0));",
+            "    double d_lp = std::exp(-0.5 * std::pow((mol.logp - 2.5) / 1.8, 2));",
+            "    mol.qed = std::sqrt(std::max(1e-5, d_mw * d_lp));",
             "}",
             "",
             "// Empirical docking scoring with conformational exploration",
@@ -107,7 +119,14 @@ class CppCodeGen(BaseCodeGen):
                     lines.append(f"    std::vector<Molecule> {out_s};")
                     conds = []
                     for p in node.predicates:
-                        field_map = {"MW": "m.mw", "LogP": "m.logp", "HBD": "m.hbd", "HBA": "m.hba", "hERG_Inhibition": "m.herg_inhibition"}
+                        field_map = {
+                            "MW": "m.mw", "LogP": "m.logp", "HBD": "m.hbd", "HBA": "m.hba",
+                            "RotatableBonds": "m.rotb", "AromaticRings": "m.aromatic_rings",
+                            "TPSA": "m.tpsa", "QED": "m.qed",
+                            "OralBioavailability": "m.oral_bioavailability",
+                            "SyntheticAccessibility": "m.synthetic_accessibility",
+                            "hERG_Inhibition": "m.herg_inhibition"
+                        }
                         cpp_field = field_map.get(p.property_name, "m.mw")
                         cpp_th = "true" if p.threshold is True else ("false" if p.threshold is False else str(p.threshold))
                         conds.append(f"({cpp_field} {p.operator} {cpp_th})")
@@ -143,9 +162,9 @@ class CppCodeGen(BaseCodeGen):
                 elif isinstance(node, IRExport):
                     in_s = f"stream_{node.inputs[0]}"
                     lines.append(f"    std::ofstream out_file(\"{node.destination_path}\");")
-                    lines.append(f"    out_file << \"id,name,smiles,mw,logp,docking_affinity\\n\";")
+                    lines.append(f"    out_file << \"id,name,smiles,MW,LogP,HBD,HBA,RotatableBonds,TPSA,QED,OralBioavailability,SyntheticAccessibility,hERG_Inhibition,docking_affinity\\n\";")
                     lines.append(f"    for (const auto& m : {in_s}) {{")
-                    lines.append(f"        out_file << m.id << \",\" << m.name << \",\" << m.smiles << \",\" << m.mw << \",\" << m.logp << \",\" << m.docking_affinity << \"\\n\";")
+                    lines.append(f"        out_file << m.id << \",\" << m.name << \",\" << m.smiles << \",\" << m.mw << \",\" << m.logp << \",\" << m.hbd << \",\" << m.hba << \",\" << m.rotb << \",\" << m.tpsa << \",\" << m.qed << \",\" << m.oral_bioavailability << \",\" << m.synthetic_accessibility << \",\" << (m.herg_inhibition ? \"True\" : \"False\") << \",\" << m.docking_affinity << \"\\n\";")
                     lines.append("    }")
                     lines.append(f"    std::cout << \"[{node.id}] Exported results to {node.destination_path}\\n\";\n")
 
