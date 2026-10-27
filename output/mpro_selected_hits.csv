@@ -1,0 +1,11 @@
+id,name,smiles,AromaticRings,BBB_Permeability,CYP3A4_Inhibition,HBA,HBD,HeavyAtoms,LogP,MW,MproDocking.affinity,MproDocking.rmsd,MproDocking.score,OralBioavailability,QED,RotatableBonds,SyntheticAccessibility,TPSA,docking_affinity,hERG_Inhibition
+OMEPRAZOLE,Prilosec,COc1ccc2[nH]c(nc2c1)S(=O)Cc3ncc(C)c(OC)c3C,2,False,True,6,1,24,4.64,355.5,-10.95,1.41,-10.95,0.95,0.801,0,1.88,91.66,-10.95,False
+PROBE_MOL_01,Decoy_01,CC(=O)c1ccc(NC(=O)c2ccc(cc2)N3CCN(C)CC3)cc1,2,True,True,5,0,25,4.81,344.48,-10.9,1.19,-10.9,0.95,0.819,0,1.82,54.55,-10.9,False
+ROFECOXIB,Vioxx,CS(=O)(=O)c1ccc(cc1)C2=C(C(=O)OC2)c3ccccc3,2,True,True,4,0,22,4.62,326.46,-10.4,1.14,-10.4,0.95,0.853,0,1.73,62.22,-10.4,False
+VORINOSTAT,Zolinza,O=C(NO)CCCCCCC(=O)Nc1ccccc1,1,True,False,5,0,19,2.96,266.34,-10.0,1.1,-10.0,0.95,0.982,2,1.8,51.75,-10.0,False
+AMLODIPINE,Norvasc,CCOC(=O)C1=C(C)NC(=C(C1c2ccccc2Cl)C(=O)OC)C,1,True,False,5,0,24,4.8,357.88,-9.99,1.43,-9.99,0.95,0.806,4,2.59,48.95,-9.99,False
+PENICILLIN_G,Penicillin_G,CC1(C)SC2C(NC(=O)Cc3ccccc3)C(=O)N2C1C(=O)O,1,True,False,6,0,23,3.86,343.47,-9.88,1.26,-9.88,0.95,0.873,4,2.52,86.28,-9.88,False
+THEOPHYLLINE,Theophylline,CN1C(=O)N(C)c2ncn(C)c2C1=O,1,True,False,6,0,14,1.28,200.24,-9.69,1.71,-9.69,0.95,0.934,1,1.55,68.3,-9.69,False
+PEPTIDE_LIKE,Peptide_Mimetic,CC(C)[C@H](NC(=O)c1ccccc1)C(=O)N2CCC[C@H]2C(=O)O,1,True,False,6,0,23,3.85,325.43,-9.49,1.22,-9.49,0.95,0.889,4,2.43,60.98,-9.49,False
+PHENOBARBITAL,Luminal,O=C1NC(=O)NC(=O)C1(CC)c2ccccc2,1,True,False,5,0,17,2.44,240.3,-9.42,1.09,-9.42,0.95,0.993,2,1.8,51.75,-9.42,False
+ACETAZOLAMIDE,Acetazolamide,CC(=O)Nc1nnc(s1)S(=O)(=O)N,1,False,False,7,0,13,0.95,231.32,-9.33,2.16,-9.33,0.95,0.88,0,1.3,131.07,-9.33,False

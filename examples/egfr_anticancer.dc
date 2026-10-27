@@ -1,0 +1,40 @@
+// DrugCode Workflow: EGFR Tyrosine Kinase Inhibitor Screening
+// Target: EGFR Kinase Domain (PDB: 1M17) - Non-Small Cell Lung Cancer (NSCLC)
+
+target EGFR_Kinase {
+    pdb_id: "1M17",
+    pocket_residues: ["LEU718", "VAL726", "ALA743", "LYS745", "MET793", "LEU844"],
+    grid_center: [ 22.0, 52.5, 11.2 ],
+    grid_size: [ 22.0, 22.0, 22.0 ]
+}
+
+@optimize(ml_guided=true)
+pipeline ScreenEGFRInhibitors {
+    dataset compounds = load_smiles("data/sample_compounds.smi");
+
+    // Kinase-like physicochemical bounds
+    filter KinaseLikeness(compounds) {
+        MW >= 250.0 and MW <= 550.0;
+        LogP <= 5.2;
+        AromaticRings >= 2;
+    }
+
+    // ADMET toxicity filter
+    filter CardiotoxFilter(KinaseLikeness) {
+        hERG_Inhibition == false;
+    }
+
+    // Docking against EGFR kinase hinge region
+    score EGFRDocking(CardiotoxFilter) against EGFR_Kinase {
+        exhaustiveness: 8,
+        affinity_threshold: -8.0
+    }
+
+    // Select top high-affinity candidates
+    rank LeadCandidates(EGFRDocking) {
+        order_by: EGFRDocking.affinity asc,
+        top_k: 5
+    }
+
+    export LeadCandidates to "output/egfr_hits.csv";
+}

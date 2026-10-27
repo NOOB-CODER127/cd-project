@@ -1,0 +1,42 @@
+// DrugCode Workflow: Multi-Target Dual Viral Protease Screening
+// Evaluates cross-reactive binding against both SARS-CoV-2 Mpro and HIV-1 Protease
+
+target SARS_CoV_2_Mpro {
+    pdb_id: "6LU7",
+    pocket_residues: ["HIS41", "CYS145", "MET49", "GLU166"],
+    grid_center: [ -10.5, 12.3, 68.9 ]
+}
+
+target HIV1_Protease {
+    pdb_id: "1HVR",
+    pocket_residues: ["ASP25", "GLY27", "ALA28", "VAL32", "ILE50", "ILE84"],
+    grid_center: [ 14.0, 28.5, 4.0 ]
+}
+
+pipeline DualProteaseScreen {
+    dataset library = load_smiles("data/sample_compounds.smi");
+
+    filter DrugLike(library) {
+        MW <= 600.0;
+        LogP <= 5.5;
+        HBD <= 6;
+        HBA <= 12;
+    }
+
+    score ScreenMpro(DrugLike) against SARS_CoV_2_Mpro {
+        exhaustiveness: 8,
+        affinity_threshold: -7.0
+    }
+
+    score ScreenHIV1(ScreenMpro) against HIV1_Protease {
+        exhaustiveness: 8,
+        affinity_threshold: -7.0
+    }
+
+    rank TopBroadSpectrum(ScreenHIV1) {
+        order_by: ScreenHIV1.affinity asc,
+        top_k: 5
+    }
+
+    export TopBroadSpectrum to "output/broad_spectrum_antivirals.csv";
+}

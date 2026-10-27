@@ -1,0 +1,4 @@
+id,name,smiles,mw,logp,docking_affinity
+AMP,Adenosine_Monophosphate,Nc1ncnc2n(cnc12)C3OC(COP(=O)(O)O)C(O)C3O,328.346,0.622,-14.2296
+REMDESIVIR,Veklury,CCC(CC)COC(=O)C(C)NP(=O)(OCC1C(C(C(O1)C#N)O)O)Oc2ccccc2,445.533,4.114,-13.7518
+NIRMATRELVIR,Paxlovid_Component,CC1(C2C1C(N(C2)C(=O)C(C(C)(C)C)NC(=O)C(F)(F)F)C(=O)NC(CC3CCNC3=O)C#N)C,448.588,4.876,-13.1685

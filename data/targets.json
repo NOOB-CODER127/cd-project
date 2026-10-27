@@ -1,0 +1,29 @@
+{
+  "SARS_CoV_2_Mpro": {
+    "name": "SARS-CoV-2 Main Protease (Mpro/3CLpro)",
+    "pdb_id": "6LU7",
+    "organism": "Severe acute respiratory syndrome coronavirus 2",
+    "pocket_residues": ["HIS41", "CYS145", "MET49", "GLU166", "GLN189", "ASP187"],
+    "grid_center": [-10.5, 12.3, 68.9],
+    "grid_size": [20.0, 20.0, 20.0],
+    "description": "Essential viral cysteine protease cleaving the polyprotein precursors pp1a and pp1ab."
+  },
+  "EGFR_Kinase": {
+    "name": "Epidermal Growth Factor Receptor (EGFR) Kinase Domain",
+    "pdb_id": "1M17",
+    "organism": "Homo sapiens",
+    "pocket_residues": ["LEU718", "VAL726", "ALA743", "LYS745", "MET793", "LEU844", "THR790"],
+    "grid_center": [22.0, 52.5, 11.2],
+    "grid_size": [22.0, 22.0, 22.0],
+    "description": "Receptor tyrosine kinase frequently mutated and overexpressed in non-small-cell lung carcinoma."
+  },
+  "HIV1_Protease": {
+    "name": "HIV-1 Retroviral Protease",
+    "pdb_id": "1HVR",
+    "organism": "Human immunodeficiency virus 1",
+    "pocket_residues": ["ASP25", "GLY27", "ALA28", "ASP29", "VAL32", "ILE50", "ILE84"],
+    "grid_center": [14.0, 28.5, 4.0],
+    "grid_size": [18.0, 18.0, 18.0],
+    "description": "Homodimeric aspartyl protease responsible for the post-translational processing of viral Gag-Pol."
+  }
+}

@@ -1,0 +1,11 @@
+id,name,smiles,AromaticRings,BBB_Permeability,CYP3A4_Inhibition,DockingScreen.affinity,DockingScreen.rmsd,DockingScreen.score,HBA,HBD,HeavyAtoms,LogP,MW,OralBioavailability,QED,RotatableBonds,SyntheticAccessibility,TPSA,docking_affinity,hERG_Inhibition
+SYN_000039,Compound_000039,CC(=O)c1ccc(NC(=O)c2ccc(cc2)N3CCN(C)CC3)cc1,2,True,True,-10.45,1.19,-10.45,5,0,25,4.81,344.48,0.95,0.819,0,1.82,54.55,-10.45,False
+SYN_000083,Compound_000083,CC(=O)c1ccc(NC(=O)c2ccc(cc2)N3CCN(C)CC3)cc1,2,True,True,-10.45,1.19,-10.45,5,0,25,4.81,344.48,0.95,0.819,0,1.82,54.55,-10.45,False
+SYN_000127,Compound_000127,CC(=O)c1ccc(NC(=O)c2ccc(cc2)N3CCN(C)CC3)cc1,2,True,True,-10.45,1.19,-10.45,5,0,25,4.81,344.48,0.95,0.819,0,1.82,54.55,-10.45,False
+SYN_000171,Compound_000171,CC(=O)c1ccc(NC(=O)c2ccc(cc2)N3CCN(C)CC3)cc1,2,True,True,-10.45,1.19,-10.45,5,0,25,4.81,344.48,0.95,0.819,0,1.82,54.55,-10.45,False
+SYN_000215,Compound_000215,CC(=O)c1ccc(NC(=O)c2ccc(cc2)N3CCN(C)CC3)cc1,2,True,True,-10.45,1.19,-10.45,5,0,25,4.81,344.48,0.95,0.819,0,1.82,54.55,-10.45,False
+SYN_000259,Compound_000259,CC(=O)c1ccc(NC(=O)c2ccc(cc2)N3CCN(C)CC3)cc1,2,True,True,-10.45,1.19,-10.45,5,0,25,4.81,344.48,0.95,0.819,0,1.82,54.55,-10.45,False
+SYN_000303,Compound_000303,CC(=O)c1ccc(NC(=O)c2ccc(cc2)N3CCN(C)CC3)cc1,2,True,True,-10.45,1.19,-10.45,5,0,25,4.81,344.48,0.95,0.819,0,1.82,54.55,-10.45,False
+SYN_000347,Compound_000347,CC(=O)c1ccc(NC(=O)c2ccc(cc2)N3CCN(C)CC3)cc1,2,True,True,-10.45,1.19,-10.45,5,0,25,4.81,344.48,0.95,0.819,0,1.82,54.55,-10.45,False
+SYN_000391,Compound_000391,CC(=O)c1ccc(NC(=O)c2ccc(cc2)N3CCN(C)CC3)cc1,2,True,True,-10.45,1.19,-10.45,5,0,25,4.81,344.48,0.95,0.819,0,1.82,54.55,-10.45,False
+SYN_000435,Compound_000435,CC(=O)c1ccc(NC(=O)c2ccc(cc2)N3CCN(C)CC3)cc1,2,True,True,-10.45,1.19,-10.45,5,0,25,4.81,344.48,0.95,0.819,0,1.82,54.55,-10.45,False

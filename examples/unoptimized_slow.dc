@@ -1,0 +1,40 @@
+// DrugCode Demonstration: Unoptimized Screening Cascade
+// In this workflow, heavy 3D docking is placed BEFORE cheap property filters.
+// DrugCode ML-guided optimization pass detects this sub-optimal ordering,
+// reorders the cascade according to learned cost-selectivity metrics,
+// and achieves 5x-10x execution speedup!
+
+target SARS_CoV_2_Mpro {
+    pdb_id: "6LU7",
+    pocket_residues: ["HIS41", "CYS145", "MET49", "GLU166"],
+    grid_center: [ -10.5, 12.3, 68.9 ]
+}
+
+pipeline InefficientScreen {
+    dataset library = load_smiles("data/sample_compounds.smi");
+
+    // SUB-OPTIMAL: Heavy docking executed first on all compounds!
+    score ExpensiveDocking(library) against SARS_CoV_2_Mpro {
+        exhaustiveness: 8,
+        affinity_threshold: -7.0
+    }
+
+    // Fast physicochemical filter run AFTER expensive docking
+    filter FastLipinski(ExpensiveDocking) {
+        MW <= 500.0;
+        LogP <= 5.0;
+        HBD <= 5;
+    }
+
+    // Fast safety filter run AFTER expensive docking
+    filter FastSafety(FastLipinski) {
+        hERG_Inhibition == false;
+    }
+
+    rank TopHits(FastSafety) {
+        order_by: ExpensiveDocking.affinity asc,
+        top_k: 5
+    }
+
+    export TopHits to "output/unoptimized_demo_hits.csv";
+}

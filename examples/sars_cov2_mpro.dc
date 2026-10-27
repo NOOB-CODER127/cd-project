@@ -1,0 +1,48 @@
+// DrugCode Workflow: SARS-CoV-2 Main Protease Lead Screening
+// Target: 3CLpro / Mpro (PDB: 6LU7) - Essential viral cysteine protease
+
+target SARS_CoV_2_Mpro {
+    pdb_id: "6LU7",
+    pocket_residues: ["HIS41", "CYS145", "MET49", "GLU166", "GLN189"],
+    grid_center: [ -10.5, 12.3, 68.9 ],
+    grid_size: [ 20.0, 20.0, 20.0 ]
+}
+
+@optimize(ml_guided=true)
+@parallel(workers=4)
+pipeline ScreenMproLeads {
+    // 1. Load chemical library
+    dataset library = load_smiles("data/sample_compounds.smi");
+
+    // 2. Physicochemical drug-likeness filter (Lipinski Rule of 5)
+    filter LipinskiRo5(library) {
+        MW <= 500.0;
+        LogP >= -0.4 and LogP <= 5.0;
+        HBD <= 5;
+        HBA <= 10;
+        RotatableBonds <= 10;
+    }
+
+    // 3. ADMET Safety & Bioavailability Filter
+    filter ADMETSafety(LipinskiRo5) {
+        hERG_Inhibition == false;
+        OralBioavailability >= 0.70;
+        SyntheticAccessibility <= 5.0;
+    }
+
+    // 4. Target Docking Screen
+    score MproDocking(ADMETSafety) against SARS_CoV_2_Mpro {
+        scoring_function: "vina_empirical",
+        exhaustiveness: 8,
+        affinity_threshold: -7.5
+    }
+
+    // 5. Rank and select top hits
+    rank TopHits(MproDocking) {
+        order_by: MproDocking.affinity asc,
+        top_k: 10
+    }
+
+    // 6. Export hits for medicinal chemistry review
+    export TopHits to "output/mpro_selected_hits.csv";
+}
