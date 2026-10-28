@@ -5,3 +5,5 @@ __pycache__/
 .pytest_cache/
 output/*.csv
 output/cpp_workflow
+output/cpp_mpro_screen
+output/cpp_*
